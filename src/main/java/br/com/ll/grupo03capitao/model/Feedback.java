@@ -14,6 +14,8 @@ public class Feedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Integer rating;
+
     private String message;
 
     @ManyToOne
@@ -29,6 +31,14 @@ public class Feedback {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
     }
 
     public String getMessage() {

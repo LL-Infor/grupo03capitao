@@ -1,5 +1,6 @@
 package br.com.ll.grupo03capitao.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -23,6 +24,10 @@ public class Project {
 
     private String description;
 
+    private Integer upvotes = 0;
+
+    private Double averageRating = 0.0;
+
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
@@ -33,10 +38,10 @@ public class Project {
         joinColumns = @JoinColumn(name = "project_id"),
         inverseJoinColumns = @JoinColumn(name = "technology_id")
     )
-    private List<Technology> technologies;
+    private List<Technology> technologies = new ArrayList<>();
 
     @OneToMany(mappedBy = "project")
-    private List<Feedback> feedbacks;
+    private List<Feedback> feedbacks = new ArrayList<>();
 
     public Project() {
     }
@@ -63,6 +68,22 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getUpvotes() {
+        return upvotes;
+    }
+
+    public void setUpvotes(Integer upvotes) {
+        this.upvotes = upvotes;
+    }
+
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
     }
 
     public Profile getProfile() {
