@@ -1,11 +1,16 @@
 package br.com.ll.grupo03capitao.model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Project {
@@ -21,6 +26,17 @@ public class Project {
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
+
+    @ManyToMany
+    @JoinTable(
+        name = "project_technology",
+        joinColumns = @JoinColumn(name = "project_id"),
+        inverseJoinColumns = @JoinColumn(name = "technology_id")
+    )
+    private List<Technology> technologies;
+
+    @OneToMany(mappedBy = "project")
+    private List<Feedback> feedbacks;
 
     public Project() {
     }
@@ -55,5 +71,21 @@ public class Project {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    public List<Technology> getTechnologies() {
+        return technologies;
+    }
+
+    public void setTechnologies(List<Technology> technologies) {
+        this.technologies = technologies;
+    }
+
+    public List<Feedback> getFeedbacks() {
+        return feedbacks;
+    }
+
+    public void setFeedbacks(List<Feedback> feedbacks) {
+        this.feedbacks = feedbacks;
     }
 }

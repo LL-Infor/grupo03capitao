@@ -7,31 +7,33 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
-import br.com.ll.grupo03capitao.model.Project;
-import br.com.ll.grupo03capitao.repository.ProjectRepository;
+import br.com.ll.grupo03capitao.dto.ProjectDTO;
+import br.com.ll.grupo03capitao.service.ProjectService;
 
 @RestController
 @RequestMapping("/api/projects")
 public class ProjectController {
 
-    private final ProjectRepository projectRepository;
+    private final ProjectService projectService;
 
-    public ProjectController(ProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;
+    public ProjectController(ProjectService projectService) {
+        this.projectService = projectService;
     }
 
     @PostMapping
-    public ResponseEntity<Project> create(
-            @Valid @RequestBody Project project) {
+    public ResponseEntity<ProjectDTO> create(
+            @Valid @RequestBody ProjectDTO projectDTO) {
 
-        Project savedProject = projectRepository.save(project);
-
-        return ResponseEntity.ok(savedProject);
+        return ResponseEntity.ok(
+                projectService.create(projectDTO)
+        );
     }
 
     @GetMapping
-    public ResponseEntity<List<Project>> findAll() {
+    public ResponseEntity<List<ProjectDTO>> findAll() {
 
-        return ResponseEntity.ok(projectRepository.findAll());
+        return ResponseEntity.ok(
+                projectService.findAll()
+        );
     }
 }
