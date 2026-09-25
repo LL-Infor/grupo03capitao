@@ -7,31 +7,33 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
-import br.com.ll.grupo03capitao.model.Technology;
-import br.com.ll.grupo03capitao.repository.TechnologyRepository;
+import br.com.ll.grupo03capitao.dto.TechnologyDTO;
+import br.com.ll.grupo03capitao.service.TechnologyService;
 
 @RestController
 @RequestMapping("/api/technologies")
 public class TechnologyController {
 
-    private final TechnologyRepository technologyRepository;
+    private final TechnologyService technologyService;
 
-    public TechnologyController(TechnologyRepository technologyRepository) {
-        this.technologyRepository = technologyRepository;
+    public TechnologyController(TechnologyService technologyService) {
+        this.technologyService = technologyService;
     }
 
     @PostMapping
-    public ResponseEntity<Technology> create(
-            @Valid @RequestBody Technology technology) {
+    public ResponseEntity<TechnologyDTO> create(
+            @Valid @RequestBody TechnologyDTO technologyDTO) {
 
-        Technology savedTechnology = technologyRepository.save(technology);
-
-        return ResponseEntity.ok(savedTechnology);
+        return ResponseEntity.ok(
+                technologyService.create(technologyDTO)
+        );
     }
 
     @GetMapping
-    public ResponseEntity<List<Technology>> findAll() {
+    public ResponseEntity<List<TechnologyDTO>> findAll() {
 
-        return ResponseEntity.ok(technologyRepository.findAll());
+        return ResponseEntity.ok(
+                technologyService.findAll()
+        );
     }
 }

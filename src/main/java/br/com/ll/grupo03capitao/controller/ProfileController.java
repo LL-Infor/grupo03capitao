@@ -5,35 +5,38 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
-import br.com.ll.grupo03capitao.model.Profile;
-import br.com.ll.grupo03capitao.repository.ProfileRepository;
+import br.com.ll.grupo03capitao.dto.ProfileDTO;
+import br.com.ll.grupo03capitao.service.ProfileService;
 
 @RestController
 @RequestMapping("/api/profiles")
 public class ProfileController {
 
-    private final ProfileRepository profileRepository;
+    private final ProfileService profileService;
 
-    public ProfileController(ProfileRepository profileRepository) {
-
-        this.profileRepository = profileRepository;
+    public ProfileController(ProfileService profileService) {
+        this.profileService = profileService;
     }
 
     @PostMapping
-    public ResponseEntity<Profile> create(
-            @Valid @RequestBody Profile profile) {
+    public ResponseEntity<ProfileDTO> create(
+            @Valid @RequestBody ProfileDTO profileDTO) {
 
-        Profile savedProfile = profileRepository.save(profile);
-
-        return ResponseEntity.ok(savedProfile);
+        return ResponseEntity.ok(
+                profileService.create(profileDTO)
+        );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Profile> findById(@PathVariable Long id) {
+    public ResponseEntity<ProfileDTO> findById(
+            @PathVariable Long id) {
 
-        return profileRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        ProfileDTO profile = profileService.findById(id);
+
+        if (profile == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(profile);
     }
-
 }
